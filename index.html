@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>yahya pll</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#070b14">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b14;--panel:#0d1424;--cy:#00f0ff;--mg:#ff2bd6;--gr:#39ff88;--ink:#e6f1ff}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:radial-gradient(circle at 50% 0,#13204a 0,var(--bg) 60%);color:var(--ink);font-family:Cairo,system-ui,sans-serif;overflow:hidden}
+.page{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:24px;text-align:center;opacity:0;pointer-events:none;transform:scale(.97);transition:opacity .5s,transform .5s;overflow-y:auto}
+.page.on{opacity:1;pointer-events:auto;transform:none}
+h1{font-family:"Share Tech Mono",monospace;font-size:clamp(2rem,10vw,3.2rem);color:var(--cy);text-shadow:0 0 18px var(--cy),0 0 40px #00f0ff55;letter-spacing:.05em}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(#00f0ff14 1px,transparent 1px) 0 0/100% 44px,linear-gradient(90deg,#00f0ff14 1px,transparent 1px) 0 0/44px 100%;-webkit-mask-image:radial-gradient(circle at 50% 40%,#000 20%,transparent 75%);mask-image:radial-gradient(circle at 50% 40%,#000 20%,transparent 75%)}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(transparent 0 3px,#0003 3px 4px)}
+h1{position:relative}
+h1:before,h1:after{content:attr(data-t);position:absolute;inset:0;overflow:hidden;opacity:0;text-shadow:none}
+h1:before{color:var(--mg);clip-path:inset(0 0 55% 0);animation:gl 4s infinite}
+h1:after{color:var(--gr);clip-path:inset(60% 0 0 0);animation:gl 4s infinite reverse}
+@keyframes gl{0%,92%,100%{transform:none;opacity:0}93%{transform:translateX(-3px);opacity:.85}96%{transform:translateX(3px);opacity:.85}}
+.tag{font-family:"Share Tech Mono",monospace;font-size:.8rem;color:var(--gr);opacity:.85;direction:ltr}
+.pct{font-family:"Share Tech Mono",monospace;color:var(--cy);font-size:1.4rem;text-shadow:0 0 12px var(--cy)}
+.cur:after{content:"▍";color:var(--cy);animation:blink 1s infinite}
+button{font:inherit;font-weight:700;color:var(--ink);background:var(--panel);border:1.5px solid var(--cy);border-radius:12px;padding:14px 22px;cursor:pointer;transition:.2s}
+button:hover,button:focus-visible{box-shadow:0 0 18px var(--cy);background:#10213a;outline:none}
+.pri{background:linear-gradient(90deg,#00b8c8,#7a2cff);border:0}
+.chk{display:none;align-items:center;gap:12px;background:var(--panel);border:1px solid #2a3a60;border-radius:10px;padding:14px 18px;cursor:pointer}
+.chk.show{display:flex}
+.chk i{width:24px;height:24px;border:2px solid #5d7099;border-radius:6px;display:grid;place-items:center;color:var(--bg)}
+.chk.busy i{border-color:var(--cy);border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite}
+.chk.ok i{background:var(--gr);border-color:var(--gr)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.track{width:min(380px,100%);height:10px;border-radius:99px;background:#1a2540;overflow:hidden}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--mg));box-shadow:0 0 14px var(--cy)}
+.orb{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0,var(--cy) 18%,#3a1b9a 60%,#0a0f25 100%);box-shadow:0 0 50px var(--cy),inset 0 0 30px #000;position:relative;animation:float 3s ease-in-out infinite}
+.orb:before,.orb:after{content:"";position:absolute;inset:-18px;border-radius:50%;border:1.5px solid var(--mg);animation:spin 6s linear infinite;border-left-color:transparent}
+.orb:after{inset:-34px;border-color:var(--cy);border-right-color:transparent;animation-duration:9s;animation-direction:reverse}
+@keyframes float{50%{transform:translateY(-10px)}}
+#typed{min-height:3.4em;font-size:1.2rem;max-width:380px;line-height:1.7}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:min(420px,100%)}
+.grid button{min-height:84px;border-color:#2a3a60;display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center}
+#modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;padding:20px;z-index:5}
+#modal.on{display:grid}
+.box{background:var(--panel);border:1.5px solid var(--cy);border-radius:16px;padding:22px;width:min(400px,100%);max-height:90vh;overflow-y:auto;box-shadow:0 0 40px #00f0ff44;display:flex;flex-direction:column;gap:14px;text-align:center}
+.box h2{color:var(--cy)}
+pre{direction:ltr;text-align:left;font-family:"Share Tech Mono",monospace;color:var(--gr);font-size:.85rem;line-height:1.7;overflow-x:auto}
+.note{font-size:.85rem;opacity:.7}
+#msgs{flex:1;min-height:0;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:6px}
+.m{padding:7px 11px;border-radius:8px;max-width:80%;background:#d9fdd3;color:#111;align-self:flex-start;box-shadow:0 1px 1px #0002}
+.m.s{background:#fff;align-self:flex-end}
+input{font:inherit;color:var(--ink);background:#0a1020;border:1px solid #2a3a60;border-radius:10px;padding:12px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+#home{background:#fff;color:#111;z-index:2}
+#home h1{color:#0b1a33;text-shadow:none}
+#home h1:before,#home h1:after{display:none}
+#home .tag{color:#5a667f}
+#home .grid button{background:#fff;color:#0b1a33;border:1px solid #c5cddd;border-radius:4px;min-height:72px;box-shadow:none}
+#home .grid button:hover,#home .grid button:focus-visible{background:#f1f5fb;border-color:#0b1a33;box-shadow:none}
+#modal .box{background:#fff;color:#111;border:1px solid #d5dbe8;box-shadow:0 10px 40px #0003;text-align:start;width:min(460px,100%)}
+#modal h2{color:#0b1a33}
+#modal button{background:#fff;color:#111;border:1px solid #b9c3d6;border-radius:4px;box-shadow:none}
+#modal button:hover{background:#f1f5fb}
+#modal .note{color:#566;opacity:1}
+#modal input{background:#fff;color:#111;border:1px solid #cfd6e4}
+.box pre{background:#0a1020;padding:12px;border-radius:4px;margin-top:8px}
+details{border:1px solid #d5dbe8;border-radius:4px;padding:10px 12px;margin-top:8px}
+summary{font-weight:700;cursor:pointer}
+details p{margin-top:8px;line-height:1.8}
+.wa{display:flex;flex-direction:column;height:58vh;border:1px solid #d5dbe8;border-radius:6px;overflow:hidden;background:#efeae2}
+.wh{display:flex;gap:10px;align-items:center;padding:10px 12px;background:#075e54;color:#fff}
+.wh i{width:38px;height:38px;border-radius:50%;background:#cfd8dc;color:#075e54;display:grid;place-items:center;font-style:normal;font-weight:700}
+.wh small{display:block;opacity:.8}
+.wf{display:flex;gap:8px;padding:8px;background:#f0f2f5}
+#modal .wf input{flex:1;border:0;border-radius:20px;min-width:0}
+#modal .wf button{background:#075e54;color:#fff;border:0;border-radius:20px;padding:10px 16px}
+.r3{height:270px;perspective:560px;background:#050a18;border-radius:6px;overflow:hidden;position:relative}
+.plane{position:absolute;left:6%;right:6%;top:30%;bottom:-25%;transform:rotateX(62deg);transform-style:preserve-3d;border:1px solid #00f0ff66;background:linear-gradient(#00f0ff55 1px,transparent 1px) 0 0/100% 30px,linear-gradient(90deg,#00f0ff55 1px,transparent 1px) 0 0/30px 100%;animation:flow 3s linear infinite}
+@keyframes flow{to{background-position:0 30px,30px 0}}
+.dot{position:absolute;width:10px;height:10px;border-radius:50%;background:#ff2b2b;box-shadow:0 0 14px #f22;transform-style:preserve-3d;animation:mv var(--t) ease-in-out infinite alternate}
+.dot:before{content:"";position:absolute;left:4px;bottom:5px;width:2px;height:46px;background:linear-gradient(#ff2b2b,transparent);transform-origin:bottom;transform:rotateX(-62deg)}
+.dot:after{content:"";position:absolute;inset:-6px;border:1.5px solid #ff2b2b;border-radius:50%;animation:ping 1.6s infinite}
+@keyframes mv{to{transform:translate(var(--dx),var(--dy))}}
+@keyframes ping{from{transform:scale(.4);opacity:1}to{transform:scale(2.6);opacity:0}}
+.r3 .tag{position:absolute;top:8px;right:10px;z-index:2}
+</style>
+</head>
+<body>
+
+<section class="page on" id="login">
+  <h1>yahya pll</h1>
+  <p class="tag">// ENCRYPTION &amp; ACCESS TERMINAL v2.0</p>
+  <button class="pri" id="loginBtn">🔒 تشفير ودخول</button>
+  <div class="chk" id="chk" role="checkbox" aria-checked="false" tabindex="0"><i>✓</i><span>أنا لست روبوت</span></div>
+</section>
+
+<section class="page" id="loading">
+  <h1>yahya pll</h1>
+  <div class="track"><div class="bar" id="bar"></div></div>
+  <div class="pct" id="pct">0%</div>
+  <p>سيتم نقلك من قبل المالك yahya pll</p>
+</section>
+
+<section class="page" id="welcome">
+  <div class="orb"></div>
+  <p id="typed"></p>
+  <button class="pri" id="ok">OK</button>
+</section>
+
+<section class="page" id="home">
+  <h1>yahya pll</h1>
+  <p class="tag">لوحة التحكم</p>
+  <div class="grid">
+    <button data-a="radar">فحص المنطقة الشبكية</button>
+    <button data-a="wep">wep cod</button>
+    <button data-a="chat">مراسلة المالك</button>
+    <button data-a="store">متجر wep</button>
+    <button data-a="learn">تعلم البرمجة</button>
+    <button data-a="news">الاطلاع على آخر الأخبار</button>
+  </div>
+</section>
+
+<div id="modal"><div class="box"><h2 id="mt"></h2><div id="mb"></div><button id="mc">إغلاق</button></div></div>
+
+<script>
+const FB = 'https://m.me/YOUR_FACEBOOK_USERNAME'; // غيّر هذا إلى رابط حسابك على فيسبوك
+const $ = id => document.getElementById(id);
+const go = id => {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  $(id).classList.add('on');
+  if (id === 'loading') load();
+  if (id === 'welcome') type();
+};
+
+document.querySelectorAll('h1').forEach(h => h.dataset.t = h.textContent);
+// 1) Login + verification
+$('loginBtn').onclick = () => { $('chk').classList.add('show'); $('loginBtn').style.display = 'none'; };
+const verify = () => {
+  const c = $('chk'); if (c.classList.contains('busy') || c.classList.contains('ok')) return;
+  c.classList.add('busy');
+  setTimeout(() => { c.classList.remove('busy'); c.classList.add('ok'); c.setAttribute('aria-checked', 'true'); setTimeout(() => go('loading'), 700); }, 1000);
+};
+$('chk').onclick = verify;
+$('chk').onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') verify(); };
+
+// 2) Loading
+function load() {
+  let v = 0; $('bar').style.width = '0';
+  const t = setInterval(() => {
+    v = Math.min(100, v + Math.random() * 5 + 1.5);
+    $('bar').style.width = v + '%'; $('pct').textContent = Math.round(v) + '%';
+    if (v >= 100) { clearInterval(t); setTimeout(() => go('welcome'), 500); }
+  }, 100);
+}
+
+// 3) Welcome
+function type() {
+  const s = 'مرحباً بك أيها المستخدم في منزل yahya المبرمج الخاص بي صفا', el = $('typed'); el.textContent = ''; el.classList.add('cur'); let i = 0;
+  const t = setInterval(() => { el.textContent += s[i++]; if (i >= s.length) clearInterval(t); }, 55);
+}
+$('ok').onclick = () => go('home');
+
+// 4) Modal helpers
+const openM = (t, h) => { $('mt').textContent = t; $('mb').innerHTML = h; $('modal').classList.add('on'); };
+$('mc').onclick = () => $('modal').classList.remove('on');
+const hex = n => Array.from({length: n}, () => Math.floor(Math.random() * 16).toString(16)).join('').toUpperCase();
+
+const actions = {
+  radar() {
+    let d = ''; for (let i = 0; i < 7; i++) d += `<i class="dot" style="left:${10 + Math.random() * 78}%;top:${10 + Math.random() * 78}%;--dx:${Math.round(Math.random() * 90 - 45)}px;--dy:${Math.round(Math.random() * 60 - 30)}px;--t:${(2 + Math.random() * 3).toFixed(1)}s"></i>`;
+    openM('فحص المنطقة الشبكية', `<div class="r3"><span class="tag" id="rc">SIGNALS: 7</span><div class="plane">${d}</div></div><p class="note">محاكاة تفاعلية للعرض فقط، لا يتم فحص أي شبكة حقيقية.</p>`);
+    clearInterval(window._rc); window._rc = setInterval(() => { const e = $('rc'); if (e) e.textContent = 'SIGNALS: ' + (5 + Math.floor(Math.random() * 4)); else clearInterval(window._rc); }, 1200);
+  },
+  wep() {
+    const draw = () => { $('wp').textContent = Array.from({length: 6}, () => hex(4) + ' ' + hex(4) + ' ' + hex(4) + ' ' + hex(4)).join('\n'); };
+    openM('wep cod', '<pre id="wp"></pre><p class="note">رموز عشوائية للعرض فقط.</p><button id="rg">توليد جديد</button>');
+    draw(); $('rg').onclick = draw;
+  },
+  chat() {
+    openM('مراسلة المالك', '<div class="wa"><div class="wh"><i>Y</i><div><b>yahya pll</b><small>متصل</small></div></div><div id="msgs"><div class="m s">مرحباً، كيف يمكنني مساعدتك؟</div></div><div class="wf"><input id="in" placeholder="اكتب رسالة"><button id="sd">إرسال</button></div></div>');
+    const add = (t, c) => { const m = document.createElement('div'); m.className = 'm ' + c; m.textContent = t; $('msgs').append(m); $('msgs').scrollTop = 1e6; };
+    const send = () => {
+      const v = $('in').value.trim(); if (!v) return;
+      add(v, ''); $('in').value = '';
+      setTimeout(() => { add('تم الاستلام، سيتم تحويلك إلى فيسبوك لمتابعة المحادثة.', 's'); setTimeout(() => window.open(FB, '_blank'), 900); }, 600);
+    };
+    $('sd').onclick = send; $('in').onkeydown = e => { if (e.key === 'Enter') send(); };
+  },
+  store() { openM('متجر wep', '<p>لا يمكن الدخول إلا بموافقة المالك</p>'); },
+  news() { openM('آخر الأخبار', '<p>لن تتمكن من تفعيل الخيار إلا بعد موافقة المالك</p>'); },
+  learn() {
+    const C = [
+      ['ما هي البرمجة؟', 'البرمجة هي كتابة تعليمات مرتبة يفهمها الحاسوب وينفذها خطوة بعد خطوة. كل برنامج تستخدمه هو مجموعة تعليمات.', 'print("مرحباً بالعالم")'],
+      ['المتغيرات', 'المتغير صندوق له اسم نخزن فيه قيمة، مثل رقم أو نص، ونستعملها لاحقاً.', 'name = "Yahya"\nage = 20\nprint(name, age)'],
+      ['الشروط', 'الشرط يجعل البرنامج يتخذ قراراً: إذا تحقق أمر ما يفعل شيئاً، وإلا يفعل شيئاً آخر.', 'if age >= 18:\n    print("بالغ")\nelse:\n    print("قاصر")'],
+      ['الحلقات', 'الحلقة تكرر تعليمات عدة مرات دون إعادة كتابتها.', 'for i in range(3):\n    print("المرة", i)'],
+      ['الدوال', 'الدالة مجموعة تعليمات نعطيها اسماً ونستدعيها متى شئنا، فنوفر الوقت ونرتب الكود.', 'def hi(name):\n    print("أهلاً", name)\n\nhi("Yahya")']
+    ];
+    openM('تعلمك أساسيات البرمجة', '<p class="note">5 دورات سهلة للمبتدئين، مجانية ومشروعة تماماً. اضغط على أي دورة لتبدأ.</p>' + C.map((c, i) => `<details><summary>الدورة ${i + 1}: ${c[0]}</summary><p>${c[1]}</p><pre>${c[2]}</pre></details>`).join(''));
+  }
+};
+document.querySelectorAll('.grid button').forEach(b => b.onclick = () => actions[b.dataset.a]());
+if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+</script>
+</body>
+  </html>
